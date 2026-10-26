@@ -35,6 +35,20 @@ extension ECMA_424.BOM.Test.Unit {
     }
 }
 
+extension ECMA_424.BOM.Test.Unit {
+
+    @Test
+    func `the BOM version defaults to one and is incremented by one`() throws {
+        let bom = try ECMA_424.BOM()
+        #expect(bom.version == .first)
+        #expect(bom.json["version"] == 1)
+        let next = bom.version.successor()
+        #expect(next > bom.version)
+        #expect(next.json == 2)
+        #expect(try ECMA_424.BOM.Version(json: 2) == next)
+    }
+}
+
 extension ECMA_424.BOM.Test.`Edge Case` {
 
     @Test
@@ -53,6 +67,13 @@ extension ECMA_424.BOM.Test.`Edge Case` {
     @Test
     func `a document that is not an object is malformed`() {
         #expect(throws: ECMA_424.Error.malformed) { try ECMA_424.BOM(json: ["bomFormat", "CycloneDX"]) }
+    }
+
+    @Test
+    func `a negative BOM version is refused`() {
+        #expect(throws: ECMA_424.Error.invalid("version")) {
+            try ECMA_424.BOM(json: ["bomFormat": "CycloneDX", "specVersion": "1.7", "version": -1])
+        }
     }
 
     @Test

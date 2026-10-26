@@ -18,7 +18,7 @@ bom.components.first?.hashes // [ECMA_424.Hash]
 try ECMA_424.BOM(json: bom.json) == bom
 ```
 
-Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_3986.URI`, and digests are bytes, so a `FIPS_180_4.Digest`'s `bytes` can be used as an `ECMA_424.Hash`'s content directly.
+The BOM version is `ECMA_424.BOM.Version`, a `Cardinal` of at least 1 (§6.4: an integer, minimum 1, default 1, incremented by 1 on each modification), with `.first` and `successor()`. Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_3986.URI`, and digests are bytes, so a `FIPS_180_4.Digest`'s `bytes` can be used as an `ECMA_424.Hash`'s content directly.
 
 ## What is left out
 

@@ -24,12 +24,6 @@ extension ECMA_424.Members {
         return text
     }
 
-    func integer(_ key: String) throws(ECMA_424.Error) -> Int? {
-        guard let member = object[key] else { return nil }
-        guard let number = member.number?.int else { throw .invalid(key) }
-        return number
-    }
-
     func uri(_ key: String) throws(ECMA_424.Error) -> RFC_3986.URI? {
         try value(key, Self.uri)
     }

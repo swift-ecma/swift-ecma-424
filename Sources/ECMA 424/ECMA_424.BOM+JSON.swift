@@ -18,7 +18,7 @@ extension ECMA_424.BOM {
         try self.init(
             specVersion: specVersion,
             serialNumber: try members.value("serialNumber", Self.serial),
-            version: try members.integer("version") ?? 1,
+            version: try members.value("version", ECMA_424.BOM.Version.init(json:)) ?? .first,
             metadata: try members.value("metadata", ECMA_424.Metadata.init(json:)),
             components: try members.unique("components", ECMA_424.Component.init(json:)),
             externalReferences: try members.values("externalReferences", ECMA_424.Reference.External.init(json:)),
@@ -45,7 +45,7 @@ extension ECMA_424.BOM {
             ("bomFormat", .string(ECMA_424.format)),
             ("specVersion", .string(specVersion)),
             ("serialNumber", serialNumber.map { .string(Self.urn + $0.description) }),
-            ("version", .number(RFC_8259.Number(version))),
+            ("version", version.json),
             ("metadata", metadata?.json),
             ("components", ECMA_424.Members.array(components.map(\.json))),
             ("externalReferences", ECMA_424.Members.array(externalReferences.map(\.json))),

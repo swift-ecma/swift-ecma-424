@@ -23,6 +23,7 @@ let package = Package(
         .package(url: "https://github.com/swift-atoms/swift-byte.git", branch: "main"),
         .package(url: "https://github.com/swift-iso/swift-iso-5962.git", branch: "main"),
         .package(url: "https://github.com/swift-ecma/swift-ecma-427.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-cardinal.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -36,6 +37,7 @@ let package = Package(
                 .product(name: "Byte", package: "swift-byte"),
                 .product(name: "ISO 5962 License Expression", package: "swift-iso-5962"),
                 .product(name: "ECMA 427", package: "swift-ecma-427"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
             ]
         ),
         .testTarget(

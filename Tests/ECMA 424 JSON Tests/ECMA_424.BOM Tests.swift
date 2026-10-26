@@ -56,7 +56,7 @@ extension ECMA_424.BOM.Test.Integration {
         let expected = try RFC_4122.UUID("3e671687-395b-41f5-a30f-a58921a69b79")
         #expect(bom.serialNumber == expected)
         #expect(bom.json["serialNumber"] == "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79")
-        #expect(bom.version == 1)
+        #expect(bom.version == .first)
     }
 
     @Test
