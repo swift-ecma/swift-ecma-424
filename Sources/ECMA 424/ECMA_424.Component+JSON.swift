@@ -1,3 +1,4 @@
+import ECMA_427
 public import RFC_8259
 
 extension ECMA_424.Component {
@@ -30,7 +31,7 @@ extension ECMA_424.Component {
             licenses: try members.values("licenses", ECMA_424.License.Choice.init(json:)),
             copyright: try members.string("copyright"),
             cpe: try members.string("cpe"),
-            purl: try members.string("purl"),
+            purl: try members.value("purl", Self.identifier),
             omnibor: try members.strings("omniborId"),
             swhid: try members.strings("swhid"),
             externalReferences: try members.values("externalReferences", ECMA_424.Reference.External.init(json:)),
@@ -38,6 +39,15 @@ extension ECMA_424.Component {
             properties: try members.values("properties", ECMA_424.Property.init(json:)),
             tags: try members.unique("tags") { element throws(ECMA_424.Error) in try ECMA_424.Members.text(element, "tags") }
         )
+    }
+
+    static func identifier(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> ECMA_427.PURL {
+        guard let text = json.string else { throw .malformed }
+        do throws(ECMA_427.Error) {
+            return try ECMA_427.PURL(text)
+        } catch {
+            throw .malformed
+        }
     }
 
     public var json: RFC_8259.Value {
@@ -58,7 +68,7 @@ extension ECMA_424.Component {
             ("licenses", ECMA_424.Members.array(licenses.map(\.json))),
             ("copyright", ECMA_424.Members.text(copyright)),
             ("cpe", ECMA_424.Members.text(cpe)),
-            ("purl", ECMA_424.Members.text(purl)),
+            ("purl", ECMA_424.Members.text(purl?.description)),
             ("omniborId", ECMA_424.Members.strings(omnibor)),
             ("swhid", ECMA_424.Members.strings(swhid)),
             ("externalReferences", ECMA_424.Members.array(externalReferences.map(\.json))),

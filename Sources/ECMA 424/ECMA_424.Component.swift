@@ -1,3 +1,5 @@
+public import ECMA_427
+
 extension ECMA_424 {
     public struct Component: Sendable, Hashable {
         public let kind: ECMA_424.Component.Kind
@@ -16,7 +18,7 @@ extension ECMA_424 {
         public let licenses: [ECMA_424.License.Choice]
         public let copyright: String?
         public let cpe: String?
-        public let purl: String?
+        public let purl: ECMA_427.PURL?
         public let omnibor: [String]
         public let swhid: [String]
         public let externalReferences: [ECMA_424.Reference.External]
@@ -41,7 +43,7 @@ extension ECMA_424 {
             licenses: [ECMA_424.License.Choice] = [],
             copyright: String? = nil,
             cpe: String? = nil,
-            purl: String? = nil,
+            purl: ECMA_427.PURL? = nil,
             omnibor: [String] = [],
             swhid: [String] = [],
             externalReferences: [ECMA_424.Reference.External] = [],
