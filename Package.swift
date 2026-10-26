@@ -21,6 +21,7 @@ let package = Package(
         .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-binary.git", branch: "main", traits: ["Base"]),
         .package(url: "https://github.com/swift-atoms/swift-byte.git", branch: "main"),
+        .package(url: "https://github.com/swift-iso/swift-iso-5962.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -32,6 +33,7 @@ let package = Package(
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
                 .product(name: "Binary", package: "swift-binary"),
                 .product(name: "Byte", package: "swift-byte"),
+                .product(name: "ISO 5962 License Expression", package: "swift-iso-5962"),
             ]
         ),
         .testTarget(
@@ -43,6 +45,7 @@ let package = Package(
                 .product(name: "RFC 3339", package: "swift-rfc-3339"),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
                 .product(name: "Byte", package: "swift-byte"),
+                .product(name: "ISO 5962 License Expression", package: "swift-iso-5962"),
             ]
         ),
     ],

@@ -1,5 +1,6 @@
 import Byte
 import ECMA_424
+import ISO_5962_License_Expression
 import RFC_3339
 import RFC_3986
 import RFC_4122
@@ -105,7 +106,7 @@ extension ECMA_424.BOM.Test.Unit {
             return
         }
         #expect(apache.identifier == .spdx("Apache-2.0"))
-        #expect(expression.value == "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0")
+        #expect(expression.value == .disjunction(.simple(.license("EPL-2.0")), .exception(.license("GPL-2.0"), "Classpath-exception-2.0")))
         #expect(own.identifier == .name("My Own License"))
     }
 
@@ -169,7 +170,7 @@ extension ECMA_424.BOM.Test.Unit {
             reference: try ECMA_424.Reference("pkg:swift/swift-ietf/swift-rfc-8259@main"),
             name: "swift-rfc-8259",
             hashes: [try ECMA_424.Hash(algorithm: .sha256, content: digest)],
-            licenses: [.expression(ECMA_424.License.Expression("Apache-2.0"))],
+            licenses: [.expression(ECMA_424.License.Expression(.simple(.license("Apache-2.0"))))],
             externalReferences: [
                 ECMA_424.Reference.External(url: try RFC_3986.URI("https://github.com/swift-ietf/swift-rfc-8259"), kind: .vcs)
             ]
@@ -311,6 +312,13 @@ extension ECMA_424.BOM.Test.`Edge Case` {
             try ECMA_424.BOM(json: [
                 "bomFormat": "CycloneDX", "specVersion": "1.7", "serialNumber": "urn:uuid:3E671687-395B-41F5-A30F-A58921A69B79",
             ])
+        }
+    }
+
+    @Test
+    func `a license expression that does not parse is refused`() {
+        #expect(throws: ECMA_424.Error.invalid("expression")) {
+            try ECMA_424.License.Choice(json: ["expression": "MIT AND"])
         }
     }
 

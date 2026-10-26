@@ -24,7 +24,7 @@ Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_39
 
 Members the schema defines but this package does not model are accepted and dropped when read: services, vulnerabilities, compositions, annotations, formulation, declarations, definitions, citations and signatures; and on components pedigree, evidence, SWID tags, release notes, model cards, data, cryptographic properties, patent assertions, the external-component markers and the deprecated `author` and `modified` members.
 
-License identifiers and license expressions are kept as text: the SPDX license list and the SPDX license expression grammar are not modelled here, and neither is the package URL (purl) grammar of ECMA-427. Email addresses and media types are kept as text. URLs are read as RFC 3986 URI references, so an IRI with non-ASCII characters is refused.
+License expressions are `ISO_5962.Expression`, the SPDX license expression grammar from swift-iso-5962's `ISO 5962 License Expression` product, because CycloneDX defines `expression` as an SPDX license expression. License identifiers are kept as text: the SPDX license list is a separately released data set and is not modelled. The package URL (purl) grammar of ECMA-427 is not modelled yet. Email addresses and media types are kept as text. URLs are read as RFC 3986 URI references, so an IRI with non-ASCII characters is refused.
 
 The tests transliterate the CycloneDX 1.7 conformance documents from the CycloneDX specification repository (Apache 2.0).
 
