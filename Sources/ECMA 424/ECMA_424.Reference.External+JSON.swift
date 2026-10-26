@@ -1,4 +1,4 @@
-import RFC_3986
+import RFC_3987
 public import RFC_8259
 
 extension ECMA_424.Reference.External {
@@ -6,7 +6,7 @@ extension ECMA_424.Reference.External {
 
     public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
-        guard let url = try members.uri("url") else { throw .missing("url") }
+        guard let url = try members.iri("url") else { throw .missing("url") }
         guard let kind = try members.value("type", Kind.init(json:)) else { throw .missing("type") }
         self.init(
             url: url,

@@ -1,6 +1,6 @@
 import Binary
 import Byte
-import RFC_3986
+import RFC_3987
 import RFC_8259
 
 extension ECMA_424 {
@@ -24,8 +24,8 @@ extension ECMA_424.Members {
         return text
     }
 
-    func uri(_ key: String) throws(ECMA_424.Error) -> RFC_3986.URI? {
-        try value(key, Self.uri)
+    func iri(_ key: String) throws(ECMA_424.Error) -> RFC_3987.IRI.Reference? {
+        try value(key, Self.iri)
     }
 
     func value<Value>(
@@ -78,10 +78,10 @@ extension ECMA_424.Members {
         return text
     }
 
-    static func uri(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> RFC_3986.URI {
+    static func iri(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> RFC_3987.IRI.Reference {
         guard let text = json.string else { throw .malformed }
-        do throws(RFC_3986.Error) {
-            return try RFC_3986.URI(text)
+        do throws(RFC_3987.IRI.Error) {
+            return try RFC_3987.IRI.Reference(text)
         } catch {
             throw .malformed
         }

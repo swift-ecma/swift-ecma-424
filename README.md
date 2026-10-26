@@ -18,13 +18,13 @@ bom.components.first?.hashes // [ECMA_424.Hash]
 try ECMA_424.BOM(json: bom.json) == bom
 ```
 
-The BOM version is `ECMA_424.BOM.Version`, a `Cardinal` of at least 1 (§6.4: an integer, minimum 1, default 1, incremented by 1 on each modification), with `.first` and `successor()`. Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_3986.URI`, and digests are bytes, so a `FIPS_180_4.Digest`'s `bytes` can be used as an `ECMA_424.Hash`'s content directly.
+The BOM version is `ECMA_424.BOM.Version`, a `Cardinal` of at least 1 (§6.4: an integer, minimum 1, default 1, incremented by 1 on each modification), with `.first` and `successor()`. Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_3987.IRI.Reference` (the schema's `iri-reference`, RFC 3987 §2.2), and digests are bytes, so a `FIPS_180_4.Digest`'s `bytes` can be used as an `ECMA_424.Hash`'s content directly.
 
 ## What is left out
 
 Members the schema defines but this package does not model are accepted and dropped when read: services, vulnerabilities, compositions, annotations, formulation, declarations, definitions, citations and signatures; and on components pedigree, evidence, SWID tags, release notes, model cards, data, cryptographic properties, patent assertions, the external-component markers and the deprecated `author` and `modified` members.
 
-License expressions are `ISO_5962.Expression`, the SPDX license expression grammar from swift-iso-5962's `ISO 5962 License Expression` product, because CycloneDX defines `expression` as an SPDX license expression. License identifiers are kept as text: the SPDX license list is a separately released data set and is not modelled. A component's `purl` is an `ECMA_427.PURL`, parsed with swift-ecma-427. Email addresses and media types are kept as text. URLs are read as RFC 3986 URI references, so an IRI with non-ASCII characters is refused.
+License expressions are `ISO_5962.Expression`, the SPDX license expression grammar from swift-iso-5962's `ISO 5962 License Expression` product, because CycloneDX defines `expression` as an SPDX license expression. License identifiers are kept as text: the SPDX license list is a separately released data set and is not modelled. A component's `purl` is an `ECMA_427.PURL`, parsed with swift-ecma-427. Email addresses and media types are kept as text.
 
 A nested test package (`Tests/Package.swift`) reads the CycloneDX 1.7 conformance documents from the CycloneDX specification repository (Apache 2.0) verbatim with swift-json, and round-trips each valid one through the model and through JSON text. The package itself depends only on swift-rfc-8259 for JSON.
 

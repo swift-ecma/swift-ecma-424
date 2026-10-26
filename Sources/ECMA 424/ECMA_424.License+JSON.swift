@@ -1,4 +1,4 @@
-import RFC_3986
+import RFC_3987
 public import RFC_8259
 
 extension ECMA_424.License {
@@ -20,7 +20,7 @@ extension ECMA_424.License {
             reference: try members.value("bom-ref", ECMA_424.Reference.init(json:)),
             acknowledgement: try members.value("acknowledgement", Acknowledgement.init(json:)),
             text: try members.value("text", ECMA_424.Attachment.init(json:)),
-            url: try members.uri("url"),
+            url: try members.iri("url"),
             properties: try members.values("properties", ECMA_424.Property.init(json:))
         )
     }

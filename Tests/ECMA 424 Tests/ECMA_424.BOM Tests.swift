@@ -1,7 +1,7 @@
 import Byte
 import ECMA_424
 import ISO_5962_License_Expression
-import RFC_3986
+import RFC_3987
 import RFC_8259
 import Testing
 
@@ -24,7 +24,7 @@ extension ECMA_424.BOM.Test.Unit {
             hashes: [try ECMA_424.Hash(algorithm: .sha256, content: digest)],
             licenses: [.expression(ECMA_424.License.Expression(.simple(.license("Apache-2.0"))))],
             externalReferences: [
-                ECMA_424.Reference.External(url: try RFC_3986.URI("https://github.com/swift-ietf/swift-rfc-8259"), kind: .vcs)
+                ECMA_424.Reference.External(url: try RFC_3987.IRI.Reference("https://github.com/swift-ietf/swift-rfc-8259"), kind: .vcs)
             ]
         )
         let bom = try ECMA_424.BOM(components: [component])
@@ -50,6 +50,22 @@ extension ECMA_424.BOM.Test.Unit {
 }
 
 extension ECMA_424.BOM.Test.`Edge Case` {
+
+    @Test
+    func `an external reference may be an IRI with non-ASCII characters or a relative reference`() throws {
+        for url in ["https://example.com/寿司", "docs/license.txt"] {
+            let reference = try ECMA_424.Reference.External(json: ["url": .string(url), "type": "website"])
+            #expect(reference.url.value == url)
+            #expect(reference.json["url"] == .string(url))
+        }
+    }
+
+    @Test
+    func `an external reference url must be an IRI reference`() {
+        #expect(throws: ECMA_424.Error.invalid("url")) {
+            try ECMA_424.Reference.External(json: ["url": "1a:b", "type": "website"])
+        }
+    }
 
     @Test
     func `the required members are required`() {

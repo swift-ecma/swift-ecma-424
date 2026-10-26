@@ -1,16 +1,16 @@
-public import RFC_3986
+public import RFC_3987
 
 extension ECMA_424 {
     public struct Organization: Sendable, Hashable {
         public let reference: ECMA_424.Reference?
         public let name: String?
-        public let url: [RFC_3986.URI]
+        public let url: [RFC_3987.IRI.Reference]
         public let contact: [ECMA_424.Organization.Contact]
 
         public init(
             reference: ECMA_424.Reference? = nil,
             name: String? = nil,
-            url: [RFC_3986.URI] = [],
+            url: [RFC_3987.IRI.Reference] = [],
             contact: [ECMA_424.Organization.Contact] = []
         ) {
             self.reference = reference

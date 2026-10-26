@@ -1,4 +1,4 @@
-import RFC_3986
+import RFC_3987
 public import RFC_8259
 
 extension ECMA_424.Organization {
@@ -9,7 +9,7 @@ extension ECMA_424.Organization {
         self.init(
             reference: try members.value("bom-ref", ECMA_424.Reference.init(json:)),
             name: try members.string("name"),
-            url: try members.values("url", ECMA_424.Members.uri),
+            url: try members.values("url", ECMA_424.Members.iri),
             contact: try members.values("contact", ECMA_424.Organization.Contact.init(json:))
         )
     }
