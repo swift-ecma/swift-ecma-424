@@ -1,0 +1,11 @@
+# .github/metadata.yaml
+description: "Swift implementation of ECMA-424: CycloneDX Bill of Materials Specification."
+topics:
+  - standards
+  - ecma
+  - ecma-424
+  - cyclonedx
+  - sbom
+homepage: "https://swift-institute.org"
+readme:
+  family: E
