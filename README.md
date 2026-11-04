@@ -1,33 +1,19 @@
 # swift-ecma-424
 
-![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
+Use this package when you need to read, check or write a CycloneDX 1.7 software bill of materials in JSON, the format ECMA-424 standardises. Start from `ECMA_424.BOM`, which you read with `ECMA_424.BOM.init(json:)` and write with `ECMA_424.BOM.json`. It works on `RFC_8259.Value`, so parse and serialize the JSON text with a JSON library. If you only need package URLs, use swift-ecma-427. If you only need SPDX license expressions, use swift-iso-5962.
 
-Swift implementation of ECMA-424, the CycloneDX Bill of Materials specification.
+## Laws
 
-## Overview
-
-ECMA-424 2nd edition (December 2025) standardises CycloneDX 1.7. This package models the software bill of materials (SBOM) part of its JSON format: the BOM, its metadata, components, hashes, licenses, external references, dependencies and properties. Each type reads from and writes to an `RFC_8259.Value`, and reading refuses what the CycloneDX 1.7 JSON schema refuses for the modelled members: a missing required member, a value outside an enumeration, a malformed serial number, timestamp or digest, a duplicate where the schema demands unique items, and a member the schema does not define.
-
-```swift
-import ECMA_424
-
-let bom = try ECMA_424.BOM(json: value)
-bom.serialNumber             // RFC_4122.UUID
-bom.metadata?.timestamp      // RFC_3339.DateTime
-bom.components.first?.hashes // [ECMA_424.Hash]
-try ECMA_424.BOM(json: bom.json) == bom
-```
-
-The BOM version is `ECMA_424.BOM.Version`, a `Cardinal` of at least 1 (§6.4: an integer, minimum 1, default 1, incremented by 1 on each modification), with `.first` and `successor()`. Timestamps are `RFC_3339.DateTime`, serial numbers `RFC_4122.UUID`, URLs `RFC_3987.IRI.Reference` (the schema's `iri-reference`, RFC 3987 §2.2), and digests are bytes, so a `FIPS_180_4.Digest`'s `bytes` can be used as an `ECMA_424.Hash`'s content directly.
-
-## What is left out
-
-Members the schema defines but this package does not model are accepted and dropped when read: services, vulnerabilities, compositions, annotations, formulation, declarations, definitions, citations and signatures; and on components pedigree, evidence, SWID tags, release notes, model cards, data, cryptographic properties, patent assertions, the external-component markers and the deprecated `author` and `modified` members.
-
-License expressions are `ISO_5962.Expression`, the SPDX license expression grammar from swift-iso-5962's `ISO 5962 License Expression` product, because CycloneDX defines `expression` as an SPDX license expression. License identifiers are kept as text: the SPDX license list is a separately released data set and is not modelled. A component's `purl` is an `ECMA_427.PURL`, parsed with swift-ecma-427. Email addresses and media types are kept as text.
-
-A nested test package (`Tests/Package.swift`) reads the CycloneDX 1.7 conformance documents from the CycloneDX specification repository (Apache 2.0) verbatim with swift-json, and round-trips each valid one through the model and through JSON text. The package itself depends only on swift-rfc-8259 for JSON.
-
-## License
-
-Apache 2.0. See [LICENSE.md](LICENSE.md).
+- Reading refuses any member the CycloneDX 1.7 schema doesn't define. Members the schema defines but this package doesn't model, such as `services`, `vulnerabilities` or a component's `pedigree`, are accepted and dropped, so they are gone after a round trip.
+- `bomFormat` must be exactly `CycloneDX`. `specVersion` is required, but it is kept as read and not checked against `1.7`.
+- A missing `version` reads as 1, and `version` is always written, even when it is 1. A version below 1 is refused.
+- `serialNumber` is `urn:uuid:` followed by a UUID in lowercase canonical form. An uppercase UUID is refused.
+- `components` at every level, `dependencies`, a component's `tags`, and a dependency's `dependsOn` and `provides` may not hold two equal elements. This is checked both when reading and when building a value.
+- An empty array is not written, and an absent array reads as empty.
+- Hash content is hexadecimal. Any case is accepted when reading, and it is always written lowercase.
+- A license has an SPDX `id` or a `name`, never both. SPDX identifiers are not checked against the SPDX license list, so `Apache-2` is accepted.
+- A license entry that holds `license` may hold nothing else. Any other entry is read as an `expression`, which must parse as an SPDX license expression.
+- `metadata.tools` is read as the current form, an object of components, when it is an object, and as the legacy array of tools when it is an array. It is written back in the form it was read. `services` in the object form are dropped.
+- URLs are IRI references. Relative references and non-ASCII characters are accepted and written back unchanged.
+- A timestamp must be a full RFC 3339 date-time. A date alone is refused.
+- A failure names the member at fault. A nested value of the wrong JSON kind, or text that doesn't parse, fails with `ECMA_424.Error.invalid(_:)` under the key that holds it. Only a document that is not an object fails with `ECMA_424.Error.malformed`.
