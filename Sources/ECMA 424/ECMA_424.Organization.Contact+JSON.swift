@@ -1,3 +1,4 @@
+import EmailAddress_Standard
 public import RFC_8259
 
 extension ECMA_424.Organization.Contact {
@@ -8,7 +9,7 @@ extension ECMA_424.Organization.Contact {
         self.init(
             reference: try members.value("bom-ref", ECMA_424.Reference.init(json:)),
             name: try members.string("name"),
-            email: try members.string("email"),
+            email: try members.email("email"),
             phone: try members.string("phone")
         )
     }
@@ -17,7 +18,7 @@ extension ECMA_424.Organization.Contact {
         ECMA_424.Members.object([
             ("bom-ref", reference?.json),
             ("name", ECMA_424.Members.text(name)),
-            ("email", ECMA_424.Members.text(email)),
+            ("email", ECMA_424.Members.text(email?.address)),
             ("phone", ECMA_424.Members.text(phone)),
         ])
     }

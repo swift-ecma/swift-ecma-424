@@ -1,7 +1,9 @@
 import Binary
 import Byte
+import EmailAddress_Standard
 import RFC_3987
 import RFC_8259
+import RFC_9110
 
 extension ECMA_424 {
     struct Members {
@@ -26,6 +28,18 @@ extension ECMA_424.Members {
 
     func iri(_ key: String) throws(ECMA_424.Error) -> RFC_3987.IRI.Reference? {
         try value(key, Self.iri)
+    }
+
+    /// A BOM comes from a third party: a malformed optional media type reads as absent, and doesn't fail the document.
+    func mediaType(_ key: String) throws(ECMA_424.Error) -> RFC_9110.MediaType? {
+        guard let text = try string(key) else { return nil }
+        return RFC_9110.MediaType(parsing: text)
+    }
+
+    /// A BOM comes from a third party: a malformed optional email address reads as absent, and doesn't fail the document.
+    func email(_ key: String) throws(ECMA_424.Error) -> EmailAddress? {
+        guard let text = try string(key) else { return nil }
+        return try? EmailAddress(text)
     }
 
     func value<Value>(

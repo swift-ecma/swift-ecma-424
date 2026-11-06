@@ -11,6 +11,8 @@ extension ECMA_424 {
         public let publisher: String?
         public let group: String?
         public let name: String
+        // swift-linter:disable:next raw concept
+        // REASON: CycloneDX leaves a component's version free-form, often a hash or a date; looked at Version.Semantic and Version.Tools, which would refuse real BOMs.
         public let version: String?
         public let description: String?
         public let scope: ECMA_424.Component.Scope?
@@ -36,6 +38,8 @@ extension ECMA_424 {
             publisher: String? = nil,
             group: String? = nil,
             name: String,
+            // swift-linter:disable:next raw concept
+            // REASON: CycloneDX leaves a component's version free-form, often a hash or a date; looked at Version.Semantic and Version.Tools, which would refuse real BOMs.
             version: String? = nil,
             description: String? = nil,
             scope: ECMA_424.Component.Scope? = nil,
