@@ -1,11 +1,11 @@
 // Verbatim from the CycloneDX 1.7 conformance suite (CycloneDX/specification, tools/src/test/resources/1.7), Apache-2.0.
 import ECMA_424
 
-extension ECMA_424.BOM.Test {
+extension `ECMA_424.BOM Tests`.Test {
     enum Valid {}
 }
 
-extension ECMA_424.BOM.Test.Valid {
+extension `ECMA_424.BOM Tests`.Test.Valid {
     static let bom = #"""
         {
           "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",

@@ -7,52 +7,54 @@ import RFC_4122
 import RFC_8259
 import Testing
 
-extension ECMA_424.BOM {
+enum `ECMA_424.BOM Tests` {}
+
+extension `ECMA_424.BOM Tests` {
     @Suite struct Test {
         @Suite struct Integration {}
         @Suite struct `Edge Case` {}
     }
 }
 
-extension ECMA_424.BOM.Test {
+extension `ECMA_424.BOM Tests`.Test {
     static func bom(_ text: String) throws -> ECMA_424.BOM {
         try ECMA_424.BOM(json: RFC_8259.Value(try JSON.parse(text)))
     }
 }
 
-extension ECMA_424.BOM.Test.Integration {
+extension `ECMA_424.BOM Tests`.Test.Integration {
 
     @Test(arguments: [
-        ECMA_424.BOM.Test.Valid.bom,
-        ECMA_424.BOM.Test.Valid.minimalViable,
-        ECMA_424.BOM.Test.Valid.componentHashes,
-        ECMA_424.BOM.Test.Valid.componentTypes,
-        ECMA_424.BOM.Test.Valid.componentIdentifiers,
-        ECMA_424.BOM.Test.Valid.dependency,
-        ECMA_424.BOM.Test.Valid.emptyComponents,
-        ECMA_424.BOM.Test.Valid.externalReference,
-        ECMA_424.BOM.Test.Valid.licenseChoice,
-        ECMA_424.BOM.Test.Valid.licenseExpression,
-        ECMA_424.BOM.Test.Valid.licenseId,
-        ECMA_424.BOM.Test.Valid.licenseName,
-        ECMA_424.BOM.Test.Valid.metadataAuthor,
-        ECMA_424.BOM.Test.Valid.metadataLifecycle,
-        ECMA_424.BOM.Test.Valid.metadataManufacturer,
-        ECMA_424.BOM.Test.Valid.metadataSupplier,
-        ECMA_424.BOM.Test.Valid.metadataTimestamp,
-        ECMA_424.BOM.Test.Valid.metadataTool,
-        ECMA_424.BOM.Test.Valid.properties,
+        `ECMA_424.BOM Tests`.Test.Valid.bom,
+        `ECMA_424.BOM Tests`.Test.Valid.minimalViable,
+        `ECMA_424.BOM Tests`.Test.Valid.componentHashes,
+        `ECMA_424.BOM Tests`.Test.Valid.componentTypes,
+        `ECMA_424.BOM Tests`.Test.Valid.componentIdentifiers,
+        `ECMA_424.BOM Tests`.Test.Valid.dependency,
+        `ECMA_424.BOM Tests`.Test.Valid.emptyComponents,
+        `ECMA_424.BOM Tests`.Test.Valid.externalReference,
+        `ECMA_424.BOM Tests`.Test.Valid.licenseChoice,
+        `ECMA_424.BOM Tests`.Test.Valid.licenseExpression,
+        `ECMA_424.BOM Tests`.Test.Valid.licenseId,
+        `ECMA_424.BOM Tests`.Test.Valid.licenseName,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataAuthor,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataLifecycle,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataManufacturer,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataSupplier,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataTimestamp,
+        `ECMA_424.BOM Tests`.Test.Valid.metadataTool,
+        `ECMA_424.BOM Tests`.Test.Valid.properties,
     ])
     func `every valid conformance document round-trips through its JSON value and JSON text`(text: String) throws {
-        let bom = try ECMA_424.BOM.Test.bom(text)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(text)
         #expect(bom.specVersion == "1.7")
         #expect(try ECMA_424.BOM(json: bom.json) == bom)
-        #expect(try ECMA_424.BOM.Test.bom(JSON(bom.json).serialize()) == bom)
+        #expect(try `ECMA_424.BOM Tests`.Test.bom(JSON(bom.json).serialize()) == bom)
     }
 
     @Test
     func `the serial number is a lowercase RFC 4122 UUID behind the urn prefix`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.minimalViable)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.minimalViable)
         let expected = try RFC_4122.UUID("3e671687-395b-41f5-a30f-a58921a69b79")
         #expect(bom.serialNumber == expected)
         #expect(bom.json["serialNumber"] == "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79")
@@ -61,7 +63,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `every component type of the conformance suite decodes`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.componentTypes)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.componentTypes)
         let expected: [ECMA_424.Component.Kind] = [
             .application, .library, .framework, .container, .operatingSystem, .firmware, .device, .file, .data,
         ]
@@ -70,7 +72,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `component hashes keep their algorithm and digest`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.componentHashes)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.componentHashes)
         let hashes = try #require(bom.components.first).hashes
         let expected: [ECMA_424.Hash.Algorithm] = [
             .md5, .sha1, .sha256, .sha384, .sha512, .sha3_256, .sha3_384, .sha3_512, .blake2b256, .blake2b384,
@@ -82,7 +84,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `component identifiers carry cpe, purl, OmniBOR and SWHID`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.componentIdentifiers)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.componentIdentifiers)
         let component = try #require(bom.components.first)
         #expect(component.purl?.description == "pkg:maven/com.example/acme-library@1.0.0")
         #expect(component.cpe == "cpe:2.3:a:example:acme-library:1.0.0:*:*:*:*:*:*:*")
@@ -96,14 +98,14 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `dependencies reference components by bom-ref`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.dependency)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.dependency)
         #expect(bom.dependencies.map(\.ref.value) == ["library-a", "library-b"])
         #expect(bom.dependencies.last?.dependsOn.map(\.value) == ["library-c"])
     }
 
     @Test
     func `a license choice mixes licenses and expressions`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.licenseChoice)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.licenseChoice)
         let licenses = try #require(bom.components.first).licenses
         guard case .license(let apache) = licenses[0],
             case .expression(let expression) = licenses[1],
@@ -119,7 +121,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `an expression keeps its acknowledgement and bom-ref`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.licenseExpression)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.licenseExpression)
         let choice = try #require(bom.components.first?.licenses.first)
         guard case .expression(let expression) = choice else {
             Issue.record("expected an expression")
@@ -132,7 +134,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `lifecycles are predefined phases or custom names`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.metadataLifecycle)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.metadataLifecycle)
         let expected: [ECMA_424.Metadata.Lifecycle] = [
             .phase(.build), .phase(.postBuild),
             .custom(name: "platform-integration-testing", description: "Integration testing specific to the runtime platform"),
@@ -142,7 +144,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `tools are components in the current form`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.metadataTool)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.metadataTool)
         guard case .components(let tools) = bom.metadata?.tools else {
             Issue.record("expected tools as components")
             return
@@ -152,7 +154,7 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `the legacy tools array is still read`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.bom)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.bom)
         guard case .legacy(let tools) = bom.metadata?.tools else {
             Issue.record("expected legacy tools")
             return
@@ -164,109 +166,109 @@ extension ECMA_424.BOM.Test.Integration {
 
     @Test
     func `the timestamp is an RFC 3339 date-time`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.metadataTimestamp)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.metadataTimestamp)
         let expected = try RFC_3339.DateTime("2020-04-13T20:20:39+00:00")
         #expect(bom.metadata?.timestamp == expected)
     }
 
     @Test
     func `a purl is a package URL`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Valid.componentIdentifiers)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.componentIdentifiers)
         let expected = try ECMA_427.PURL("pkg:maven/com.example/acme-library@1.0.0")
         #expect(bom.components.first?.purl == expected)
     }
 }
 
-extension ECMA_424.BOM.Test.`Edge Case` {
+extension `ECMA_424.BOM Tests`.Test.`Edge Case` {
 
     @Test
     func `another bom format is refused`() {
-        #expect(throws: ECMA_424.Error.invalid("bomFormat")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.bomformat) }
+        #expect(throws: ECMA_424.Error.invalid("bomFormat")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.bomformat) }
     }
 
     @Test
     func `an empty bom-ref is refused`() {
-        #expect(throws: ECMA_424.Error.invalid("bom-ref")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.componentRef) }
+        #expect(throws: ECMA_424.Error.invalid("bom-ref")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.componentRef) }
     }
 
     @Test
     func `an unknown component type is refused`() {
-        #expect(throws: ECMA_424.Error.invalid("type")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.componentType) }
+        #expect(throws: ECMA_424.Error.invalid("type")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.componentType) }
     }
 
     @Test
     func `a dependency without a ref is refused`() {
-        #expect(throws: ECMA_424.Error.missing("ref")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.dependency) }
+        #expect(throws: ECMA_424.Error.missing("ref")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.dependency) }
     }
 
     @Test
     func `a component without a name is refused`() {
-        #expect(throws: ECMA_424.Error.missing("name")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.emptyComponent) }
+        #expect(throws: ECMA_424.Error.missing("name")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.emptyComponent) }
     }
 
     @Test
     func `a component without a type is refused`() {
         #expect(throws: ECMA_424.Error.missing("type")) {
-            try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.missingComponentType)
+            try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.missingComponentType)
         }
     }
 
     @Test
     func `an unknown hash algorithm is refused`() {
-        #expect(throws: ECMA_424.Error.invalid("alg")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.hashAlg) }
+        #expect(throws: ECMA_424.Error.invalid("alg")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.hashAlg) }
     }
 
     @Test(arguments: [
-        ECMA_424.BOM.Test.Invalid.hashMd5,
-        ECMA_424.BOM.Test.Invalid.hashSha1,
-        ECMA_424.BOM.Test.Invalid.hashSha256,
-        ECMA_424.BOM.Test.Invalid.hashSha512,
+        `ECMA_424.BOM Tests`.Test.Invalid.hashMd5,
+        `ECMA_424.BOM Tests`.Test.Invalid.hashSha1,
+        `ECMA_424.BOM Tests`.Test.Invalid.hashSha256,
+        `ECMA_424.BOM Tests`.Test.Invalid.hashSha512,
     ])
     func `hash content that is not a digest is refused`(text: String) {
-        #expect(throws: ECMA_424.Error.invalid("content")) { try ECMA_424.BOM.Test.bom(text) }
+        #expect(throws: ECMA_424.Error.invalid("content")) { try `ECMA_424.BOM Tests`.Test.bom(text) }
     }
 
     @Test
     func `a license object beside an expression is refused`() {
         #expect(throws: ECMA_424.Error.unexpected("expression")) {
-            try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.licenseChoice)
+            try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.licenseChoice)
         }
     }
 
     @Test
     func `a license without id or name is refused`() {
         #expect(throws: ECMA_424.Error.missing("id")) {
-            try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.licenseMissingIdAndName)
+            try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.licenseMissingIdAndName)
         }
     }
 
     @Test
     func `a date without a time is not a timestamp`() {
         #expect(throws: ECMA_424.Error.invalid("timestamp")) {
-            try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.metadataTimestamp)
+            try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.metadataTimestamp)
         }
     }
 
     @Test
     func `a property without a name is refused`() {
-        #expect(throws: ECMA_424.Error.missing("name")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.properties) }
+        #expect(throws: ECMA_424.Error.missing("name")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.properties) }
     }
 
     @Test
     func `an unknown scope is refused`() {
-        #expect(throws: ECMA_424.Error.invalid("scope")) { try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.scope) }
+        #expect(throws: ECMA_424.Error.invalid("scope")) { try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.scope) }
     }
 
     @Test
     func `a truncated serial number is refused`() {
         #expect(throws: ECMA_424.Error.invalid("serialNumber")) {
-            try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.serialnumber)
+            try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.serialnumber)
         }
     }
 
     @Test
     func `an SPDX identifier outside the license list is accepted, because the list is not modeled`() throws {
-        let bom = try ECMA_424.BOM.Test.bom(ECMA_424.BOM.Test.Invalid.licenseId)
+        let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Invalid.licenseId)
         let choice = try #require(bom.components.first?.licenses.first)
         guard case .license(let license) = choice else {
             Issue.record("expected a license")

@@ -5,14 +5,16 @@ import RFC_3987
 import RFC_8259
 import Testing
 
-extension ECMA_424.BOM {
+enum `ECMA_424.BOM Tests` {}
+
+extension `ECMA_424.BOM Tests` {
     @Suite struct Test {
         @Suite struct Unit {}
         @Suite struct `Edge Case` {}
     }
 }
 
-extension ECMA_424.BOM.Test.Unit {
+extension `ECMA_424.BOM Tests`.Test.Unit {
 
     @Test
     func `a built BOM serializes the required members and round-trips`() throws {
@@ -35,7 +37,7 @@ extension ECMA_424.BOM.Test.Unit {
     }
 }
 
-extension ECMA_424.BOM.Test.Unit {
+extension `ECMA_424.BOM Tests`.Test.Unit {
 
     @Test
     func `the BOM version defaults to one and is incremented by one`() throws {
@@ -49,7 +51,7 @@ extension ECMA_424.BOM.Test.Unit {
     }
 }
 
-extension ECMA_424.BOM.Test.`Edge Case` {
+extension `ECMA_424.BOM Tests`.Test.`Edge Case` {
 
     @Test
     func `an external reference may be an IRI with non-ASCII characters or a relative reference`() throws {
