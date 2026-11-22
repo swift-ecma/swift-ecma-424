@@ -15,10 +15,10 @@ extension ECMA_424.License.Expression {
         )
     }
 
-    static func expression(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> ISO_5962.Expression {
+    static func expression(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> ISO.`5962`.Expression {
         guard let text = json.string else { throw .malformed }
-        do throws(ISO_5962.Expression.Error) {
-            return try ISO_5962.Expression(text)
+        do throws(ISO.`5962`.Expression.Error) {
+            return try ISO.`5962`.Expression(text)
         } catch {
             throw .malformed
         }
