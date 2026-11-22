@@ -10,7 +10,7 @@ extension ECMA_424.Component {
         "signature",
     ]
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         guard let kind = try members.value("type", Kind.init(json:)) else { throw .missing("type") }
         guard let name = try members.string("name") else { throw .missing("name") }
@@ -41,7 +41,7 @@ extension ECMA_424.Component {
         )
     }
 
-    static func identifier(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> ECMA_427.PURL {
+    static func identifier(_ json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> ECMA_427.PURL {
         guard let text = json.string else { throw .malformed }
         do throws(ECMA_427.Error) {
             return try ECMA_427.PURL(text)
@@ -50,7 +50,7 @@ extension ECMA_424.Component {
         }
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         ECMA_424.Members.object([
             ("type", kind.json),
             ("mime-type", ECMA_424.Members.text(mime)),

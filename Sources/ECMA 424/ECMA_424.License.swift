@@ -6,7 +6,7 @@ extension ECMA_424 {
         public let reference: ECMA_424.Reference?
         public let acknowledgement: ECMA_424.License.Acknowledgement?
         public let text: ECMA_424.Attachment?
-        public let url: RFC_3987.IRI.Reference?
+        public let url: IETF.RFC.`3987`.IRI.Reference?
         public let properties: [ECMA_424.Property]
 
         public init(
@@ -14,7 +14,7 @@ extension ECMA_424 {
             reference: ECMA_424.Reference? = nil,
             acknowledgement: ECMA_424.License.Acknowledgement? = nil,
             text: ECMA_424.Attachment? = nil,
-            url: RFC_3987.IRI.Reference? = nil,
+            url: IETF.RFC.`3987`.IRI.Reference? = nil,
             properties: [ECMA_424.Property] = []
         ) {
             self.identifier = identifier

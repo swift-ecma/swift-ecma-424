@@ -3,7 +3,7 @@ public import RFC_4122
 extension ECMA_424 {
     public struct BOM: Sendable, Hashable {
         public let specVersion: String
-        public let serialNumber: RFC_4122.UUID?
+        public let serialNumber: IETF.RFC.`4122`.UUID?
         public let version: ECMA_424.BOM.Version
         public let metadata: ECMA_424.Metadata?
         public let components: [ECMA_424.Component]
@@ -13,7 +13,7 @@ extension ECMA_424 {
 
         public init(
             specVersion: String = ECMA_424.version,
-            serialNumber: RFC_4122.UUID? = nil,
+            serialNumber: IETF.RFC.`4122`.UUID? = nil,
             version: ECMA_424.BOM.Version = .first,
             metadata: ECMA_424.Metadata? = nil,
             components: [ECMA_424.Component] = [],

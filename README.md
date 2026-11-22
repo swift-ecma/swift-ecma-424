@@ -1,6 +1,6 @@
 # swift-ecma-424
 
-Use this package when you need to read, check or write a CycloneDX 1.7 software bill of materials in JSON, the format ECMA-424 standardises. Start from `ECMA_424.BOM`, which you read with `ECMA_424.BOM.init(json:)` and write with `ECMA_424.BOM.json`. It works on `RFC_8259.Value`, so parse and serialize the JSON text with a JSON library. If you only need package URLs, use swift-ecma-427. If you only need SPDX license expressions, use swift-iso-5962.
+Use this package when you need to read, check or write a CycloneDX 1.7 software bill of materials in JSON, the format ECMA-424 standardises. Start from `ECMA_424.BOM`, which you read with `ECMA_424.BOM.init(json:)` and write with `ECMA_424.BOM.json`. It works on `IETF.RFC.`8259`.Value`, so parse and serialize the JSON text with a JSON library. If you only need package URLs, use swift-ecma-427. If you only need SPDX license expressions, use swift-iso-5962.
 
 ## Laws
 

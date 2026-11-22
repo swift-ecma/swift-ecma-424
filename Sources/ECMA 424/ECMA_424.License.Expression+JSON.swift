@@ -4,7 +4,7 @@ public import RFC_8259
 extension ECMA_424.License.Expression {
     static let keys: Set<String> = ["expression", "expressionDetails", "acknowledgement", "bom-ref", "licensing", "properties"]
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         guard let value = try members.value("expression", Self.expression) else { throw .missing("expression") }
         self.init(
@@ -15,7 +15,7 @@ extension ECMA_424.License.Expression {
         )
     }
 
-    static func expression(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> ISO.`5962`.Expression {
+    static func expression(_ json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> ISO.`5962`.Expression {
         guard let text = json.string else { throw .malformed }
         do throws(ISO.`5962`.Expression.Error) {
             return try ISO.`5962`.Expression(text)
@@ -24,7 +24,7 @@ extension ECMA_424.License.Expression {
         }
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         ECMA_424.Members.object([
             ("expression", .string(value.description)),
             ("acknowledgement", acknowledgement?.json),

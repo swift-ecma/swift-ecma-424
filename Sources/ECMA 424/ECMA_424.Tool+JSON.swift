@@ -3,7 +3,7 @@ public import RFC_8259
 extension ECMA_424.Tool {
     static let keys: Set<String> = ["vendor", "name", "version", "hashes", "externalReferences"]
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         self.init(
             vendor: try members.string("vendor"),
@@ -14,7 +14,7 @@ extension ECMA_424.Tool {
         )
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         ECMA_424.Members.object([
             ("vendor", ECMA_424.Members.text(vendor)),
             ("name", ECMA_424.Members.text(name)),

@@ -18,7 +18,7 @@ extension `ECMA_424.BOM Tests` {
 
 extension `ECMA_424.BOM Tests`.Test {
     static func bom(_ text: String) throws -> ECMA_424.BOM {
-        try ECMA_424.BOM(json: RFC_8259.Value(try JSON.parse(text)))
+        try ECMA_424.BOM(json: IETF.RFC.`8259`.Value(try JSON.parse(text)))
     }
 }
 
@@ -55,7 +55,7 @@ extension `ECMA_424.BOM Tests`.Test.Integration {
     @Test
     func `the serial number is a lowercase RFC 4122 UUID behind the urn prefix`() throws {
         let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.minimalViable)
-        let expected = try RFC_4122.UUID("3e671687-395b-41f5-a30f-a58921a69b79")
+        let expected = try IETF.RFC.`4122`.UUID("3e671687-395b-41f5-a30f-a58921a69b79")
         #expect(bom.serialNumber == expected)
         #expect(bom.json["serialNumber"] == "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79")
         #expect(bom.version == .first)
@@ -167,7 +167,7 @@ extension `ECMA_424.BOM Tests`.Test.Integration {
     @Test
     func `the timestamp is an RFC 3339 date-time`() throws {
         let bom = try `ECMA_424.BOM Tests`.Test.bom(`ECMA_424.BOM Tests`.Test.Valid.metadataTimestamp)
-        let expected = try RFC_3339.DateTime("2020-04-13T20:20:39+00:00")
+        let expected = try IETF.RFC.`3339`.DateTime("2020-04-13T20:20:39+00:00")
         #expect(bom.metadata?.timestamp == expected)
     }
 

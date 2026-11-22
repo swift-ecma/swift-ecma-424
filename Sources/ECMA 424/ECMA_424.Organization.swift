@@ -4,13 +4,13 @@ extension ECMA_424 {
     public struct Organization: Sendable, Hashable {
         public let reference: ECMA_424.Reference?
         public let name: String?
-        public let url: [RFC_3987.IRI.Reference]
+        public let url: [IETF.RFC.`3987`.IRI.Reference]
         public let contact: [ECMA_424.Organization.Contact]
 
         public init(
             reference: ECMA_424.Reference? = nil,
             name: String? = nil,
-            url: [RFC_3987.IRI.Reference] = [],
+            url: [IETF.RFC.`3987`.IRI.Reference] = [],
             contact: [ECMA_424.Organization.Contact] = []
         ) {
             self.reference = reference

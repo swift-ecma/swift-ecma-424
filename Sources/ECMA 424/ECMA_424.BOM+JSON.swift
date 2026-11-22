@@ -10,7 +10,7 @@ extension ECMA_424.BOM {
 
     static let urn = "urn:uuid:"
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         guard let format = try members.string("bomFormat") else { throw .missing("bomFormat") }
         guard format == ECMA_424.format else { throw .invalid("bomFormat") }
@@ -27,12 +27,12 @@ extension ECMA_424.BOM {
         )
     }
 
-    static func serial(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> RFC_4122.UUID {
+    static func serial(_ json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> IETF.RFC.`4122`.UUID {
         guard let text = json.string, text.hasPrefix(urn) else { throw .malformed }
         let uuid = String(text.dropFirst(urn.count))
-        let parsed: RFC_4122.UUID
-        do throws(RFC_4122.UUID.Error) {
-            parsed = try RFC_4122.UUID(uuid)
+        let parsed: IETF.RFC.`4122`.UUID
+        do throws(IETF.RFC.`4122`.UUID.Error) {
+            parsed = try IETF.RFC.`4122`.UUID(uuid)
         } catch {
             throw .malformed
         }
@@ -40,7 +40,7 @@ extension ECMA_424.BOM {
         return parsed
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         ECMA_424.Members.object([
             ("bomFormat", .string(ECMA_424.format)),
             ("specVersion", .string(specVersion)),

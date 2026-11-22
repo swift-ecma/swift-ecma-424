@@ -7,9 +7,9 @@ import RFC_9110
 
 extension ECMA_424 {
     struct Members {
-        let object: RFC_8259.Object
+        let object: IETF.RFC.`8259`.Object
 
-        init(_ json: RFC_8259.Value, known: Swift::Set<Swift::String>) throws(ECMA_424.Error) {
+        init(_ json: IETF.RFC.`8259`.Value, known: Swift::Set<Swift::String>) throws(ECMA_424.Error) {
             guard let object = json.object else { throw .malformed }
             if let unknown = object.keys.first(where: { !known.contains($0) }) {
                 throw .unexpected(unknown)
@@ -26,14 +26,14 @@ extension ECMA_424.Members {
         return text
     }
 
-    func iri(_ key: String) throws(ECMA_424.Error) -> RFC_3987.IRI.Reference? {
+    func iri(_ key: String) throws(ECMA_424.Error) -> IETF.RFC.`3987`.IRI.Reference? {
         try value(key, Self.iri)
     }
 
     /// A BOM comes from a third party: a malformed optional media type reads as absent, and doesn't fail the document.
-    func mediaType(_ key: String) throws(ECMA_424.Error) -> RFC_9110.MediaType? {
+    func mediaType(_ key: String) throws(ECMA_424.Error) -> IETF.RFC.`9110`.MediaType? {
         guard let text = try string(key) else { return nil }
-        return RFC_9110.MediaType(parsing: text)
+        return IETF.RFC.`9110`.MediaType(parsing: text)
     }
 
     /// A BOM comes from a third party: a malformed optional email address reads as absent, and doesn't fail the document.
@@ -44,7 +44,7 @@ extension ECMA_424.Members {
 
     func value<Value>(
         _ key: String,
-        _ decode: (RFC_8259.Value) throws(ECMA_424.Error) -> Value
+        _ decode: (IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> Value
     ) throws(ECMA_424.Error) -> Value? {
         guard let member = object[key] else { return nil }
         return try Self.within(key, member, decode)
@@ -52,7 +52,7 @@ extension ECMA_424.Members {
 
     func values<Value>(
         _ key: String,
-        _ decode: (RFC_8259.Value) throws(ECMA_424.Error) -> Value
+        _ decode: (IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> Value
     ) throws(ECMA_424.Error) -> [Value] {
         guard let member = object[key] else { return [] }
         guard let array = member.array else { throw .invalid(key) }
@@ -63,7 +63,7 @@ extension ECMA_424.Members {
 
     func unique<Value: Hashable>(
         _ key: String,
-        _ decode: (RFC_8259.Value) throws(ECMA_424.Error) -> Value
+        _ decode: (IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> Value
     ) throws(ECMA_424.Error) -> [Value] {
         let elements = try values(key, decode)
         return try Self.distinct(elements, key)
@@ -77,8 +77,8 @@ extension ECMA_424.Members {
 extension ECMA_424.Members {
     static func within<Value>(
         _ key: String,
-        _ json: RFC_8259.Value,
-        _ decode: (RFC_8259.Value) throws(ECMA_424.Error) -> Value
+        _ json: IETF.RFC.`8259`.Value,
+        _ decode: (IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> Value
     ) throws(ECMA_424.Error) -> Value {
         do throws(ECMA_424.Error) {
             return try decode(json)
@@ -87,15 +87,15 @@ extension ECMA_424.Members {
         }
     }
 
-    static func text(_ json: RFC_8259.Value, _ key: String) throws(ECMA_424.Error) -> String {
+    static func text(_ json: IETF.RFC.`8259`.Value, _ key: String) throws(ECMA_424.Error) -> String {
         guard let text = json.string else { throw .invalid(key) }
         return text
     }
 
-    static func iri(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> RFC_3987.IRI.Reference {
+    static func iri(_ json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> IETF.RFC.`3987`.IRI.Reference {
         guard let text = json.string else { throw .malformed }
-        do throws(RFC_3987.IRI.Error) {
-            return try RFC_3987.IRI.Reference(text)
+        do throws(IETF.RFC.`3987`.IRI.Error) {
+            return try IETF.RFC.`3987`.IRI.Reference(text)
         } catch {
             throw .malformed
         }
@@ -126,23 +126,23 @@ extension ECMA_424.Members {
 }
 
 extension ECMA_424.Members {
-    static func object(_ members: [(key: String, value: RFC_8259.Value?)]) -> RFC_8259.Value {
+    static func object(_ members: [(key: String, value: IETF.RFC.`8259`.Value?)]) -> IETF.RFC.`8259`.Value {
         .object(
-            RFC_8259.Object(
+            IETF.RFC.`8259`.Object(
                 members.compactMap { member in member.value.map { (key: member.key, value: $0) } }
             )
         )
     }
 
-    static func text(_ value: String?) -> RFC_8259.Value? {
-        value.map { RFC_8259.Value.string($0) }
+    static func text(_ value: String?) -> IETF.RFC.`8259`.Value? {
+        value.map { IETF.RFC.`8259`.Value.string($0) }
     }
 
-    static func array(_ elements: [RFC_8259.Value]) -> RFC_8259.Value? {
-        elements.isEmpty ? nil : .array(RFC_8259.Array(elements))
+    static func array(_ elements: [IETF.RFC.`8259`.Value]) -> IETF.RFC.`8259`.Value? {
+        elements.isEmpty ? nil : .array(IETF.RFC.`8259`.Array(elements))
     }
 
-    static func strings(_ elements: [String]) -> RFC_8259.Value? {
-        array(elements.map { RFC_8259.Value.string($0) })
+    static func strings(_ elements: [String]) -> IETF.RFC.`8259`.Value? {
+        array(elements.map { IETF.RFC.`8259`.Value.string($0) })
     }
 }

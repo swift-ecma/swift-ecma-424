@@ -4,7 +4,7 @@ public import RFC_8259
 extension ECMA_424.License {
     static let keys: Set<String> = ["bom-ref", "id", "name", "acknowledgement", "text", "url", "licensing", "properties"]
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         let identifier: Identifier
         let id = try members.string("id")
@@ -25,8 +25,8 @@ extension ECMA_424.License {
         )
     }
 
-    public var json: RFC_8259.Value {
-        let (id, name): (RFC_8259.Value?, RFC_8259.Value?) =
+    public var json: IETF.RFC.`8259`.Value {
+        let (id, name): (IETF.RFC.`8259`.Value?, IETF.RFC.`8259`.Value?) =
             switch identifier {
             case .spdx(let value): (.string(value), nil)
             case .name(let value): (nil, .string(value))

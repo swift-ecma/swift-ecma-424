@@ -7,7 +7,7 @@ extension ECMA_424.Metadata {
         "licenses", "properties", "distributionConstraints",
     ]
 
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         let members = try ECMA_424.Members(json, known: Self.keys)
         self.init(
             timestamp: try members.value("timestamp", Self.timestamp),
@@ -22,16 +22,16 @@ extension ECMA_424.Metadata {
         )
     }
 
-    static func timestamp(_ json: RFC_8259.Value) throws(ECMA_424.Error) -> RFC_3339.DateTime {
+    static func timestamp(_ json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) -> IETF.RFC.`3339`.DateTime {
         guard let text = json.string else { throw .malformed }
-        do throws(RFC_3339.DateTime.Error) {
-            return try RFC_3339.DateTime(text)
+        do throws(IETF.RFC.`3339`.DateTime.Error) {
+            return try IETF.RFC.`3339`.DateTime(text)
         } catch {
             throw .malformed
         }
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         ECMA_424.Members.object([
             ("timestamp", timestamp.map { .string($0.description) }),
             ("lifecycles", ECMA_424.Members.array(lifecycles.map(\.json))),

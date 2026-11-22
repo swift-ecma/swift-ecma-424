@@ -26,7 +26,7 @@ extension `ECMA_424.BOM Tests`.Test.Unit {
             hashes: [try ECMA_424.Hash(algorithm: .sha256, content: digest)],
             licenses: [.expression(ECMA_424.License.Expression(.simple(.license("Apache-2.0"))))],
             externalReferences: [
-                ECMA_424.Reference.External(url: try RFC_3987.IRI.Reference("https://github.com/swift-ietf/swift-rfc-8259"), kind: .vcs)
+                ECMA_424.Reference.External(url: try IETF.RFC.`3987`.IRI.Reference("https://github.com/swift-ietf/swift-rfc-8259"), kind: .vcs)
             ]
         )
         let bom = try ECMA_424.BOM(components: [component])

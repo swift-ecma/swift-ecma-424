@@ -1,7 +1,7 @@
 public import RFC_8259
 
 extension ECMA_424.Metadata.Lifecycle {
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         guard let object = json.object else { throw .malformed }
         if object["phase"] != nil {
             let members = try ECMA_424.Members(json, known: ["phase"])
@@ -14,7 +14,7 @@ extension ECMA_424.Metadata.Lifecycle {
         }
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         switch self {
         case .phase(let phase):
             ECMA_424.Members.object([("phase", phase.json)])

@@ -1,7 +1,7 @@
 public import RFC_8259
 
 extension ECMA_424.License.Choice {
-    public init(json: RFC_8259.Value) throws(ECMA_424.Error) {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA_424.Error) {
         guard let object = json.object else { throw .malformed }
         if object["license"] != nil {
             let members = try ECMA_424.Members(json, known: ["license"])
@@ -14,7 +14,7 @@ extension ECMA_424.License.Choice {
         }
     }
 
-    public var json: RFC_8259.Value {
+    public var json: IETF.RFC.`8259`.Value {
         switch self {
         case .license(let license): ECMA_424.Members.object([("license", license.json)])
         case .expression(let expression): expression.json

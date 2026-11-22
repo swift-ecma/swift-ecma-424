@@ -2,7 +2,7 @@ public import RFC_3339
 
 extension ECMA_424 {
     public struct Metadata: Sendable, Hashable {
-        public let timestamp: RFC_3339.DateTime?
+        public let timestamp: IETF.RFC.`3339`.DateTime?
         public let lifecycles: [ECMA_424.Metadata.Lifecycle]
         public let tools: ECMA_424.Metadata.Tools?
         public let manufacturer: ECMA_424.Organization?
@@ -13,7 +13,7 @@ extension ECMA_424 {
         public let properties: [ECMA_424.Property]
 
         public init(
-            timestamp: RFC_3339.DateTime? = nil,
+            timestamp: IETF.RFC.`3339`.DateTime? = nil,
             lifecycles: [ECMA_424.Metadata.Lifecycle] = [],
             tools: ECMA_424.Metadata.Tools? = nil,
             manufacturer: ECMA_424.Organization? = nil,
