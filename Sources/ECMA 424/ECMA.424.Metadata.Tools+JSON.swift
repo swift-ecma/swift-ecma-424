@@ -1,0 +1,25 @@
+public import RFC_8259
+
+extension ECMA.`424`.Metadata.Tools {
+    public init(json: IETF.RFC.`8259`.Value) throws(ECMA.`424`.Error) {
+        if let array = json.array {
+            self = .legacy(
+                try array.map { element throws(ECMA.`424`.Error) in
+                    try ECMA.`424`.Members.within("tools", element, ECMA.`424`.Tool.init(json:))
+                }
+            )
+        } else {
+            let members = try ECMA.`424`.Members(json, known: ["components", "services"])
+            self = .components(try members.unique("components", ECMA.`424`.Component.init(json:)))
+        }
+    }
+
+    public var json: IETF.RFC.`8259`.Value {
+        switch self {
+        case .components(let components):
+            ECMA.`424`.Members.object([("components", ECMA.`424`.Members.array(components.map(\.json)))])
+        case .legacy(let tools):
+            .array(IETF.RFC.`8259`.Array(tools.map(\.json)))
+        }
+    }
+}

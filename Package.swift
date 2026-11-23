@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "ECMA 424", targets: ["ECMA 424"])
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-ecma/swift-ecma.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-8259.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-4122.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-3339.git", branch: "main"),
@@ -31,6 +32,7 @@ let package = Package(
         .target(
             name: "ECMA 424",
             dependencies: [
+                .product(name: "ECMA", package: "swift-ecma"),
                 .product(name: "RFC 8259", package: "swift-rfc-8259"),
                 .product(name: "RFC 4122", package: "swift-rfc-4122"),
                 .product(name: "RFC 3339", package: "swift-rfc-3339"),

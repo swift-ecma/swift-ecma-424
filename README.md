@@ -1,6 +1,6 @@
 # swift-ecma-424
 
-Use this package when you need to read, check or write a CycloneDX 1.7 software bill of materials in JSON, the format ECMA-424 standardises. Start from `ECMA_424.BOM`, which you read with `ECMA_424.BOM.init(json:)` and write with `ECMA_424.BOM.json`. It works on `IETF.RFC.`8259`.Value`, so parse and serialize the JSON text with a JSON library. If you only need package URLs, use swift-ecma-427. If you only need SPDX license expressions, use swift-iso-5962.
+Use this package when you need to read, check or write a CycloneDX 1.7 software bill of materials in JSON, the format ECMA-424 standardises. Start from `ECMA.`424`.BOM`, which you read with `ECMA.`424`.BOM.init(json:)` and write with `ECMA.`424`.BOM.json`. It works on `IETF.RFC.`8259`.Value`, so parse and serialize the JSON text with a JSON library. If you only need package URLs, use swift-ecma-427. If you only need SPDX license expressions, use swift-iso-5962.
 
 ## Laws
 
@@ -16,4 +16,4 @@ Use this package when you need to read, check or write a CycloneDX 1.7 software 
 - `metadata.tools` is read as the current form, an object of components, when it is an object, and as the legacy array of tools when it is an array. It is written back in the form it was read. `services` in the object form are dropped.
 - URLs are IRI references. Relative references and non-ASCII characters are accepted and written back unchanged.
 - A timestamp must be a full RFC 3339 date-time. A date alone is refused.
-- A failure names the member at fault. A nested value of the wrong JSON kind, or text that doesn't parse, fails with `ECMA_424.Error.invalid(_:)` under the key that holds it. Only a document that is not an object fails with `ECMA_424.Error.malformed`.
+- A failure names the member at fault. A nested value of the wrong JSON kind, or text that doesn't parse, fails with `ECMA.`424`.Error.invalid(_:)` under the key that holds it. Only a document that is not an object fails with `ECMA.`424`.Error.malformed`.
